@@ -2,6 +2,7 @@ package com.abahety.simpletodo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements EditItemDialog.EditItemDialogListener {
 
     private ListView lvItems;
     private ArrayList<String> items;
@@ -57,10 +58,15 @@ public class MainActivity extends ActionBarActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editIntent = new Intent(MainActivity.this, EditItemActivity.class);
-                editIntent.putExtra("oldItem", items.get(position).toString());
-                editIntent.putExtra("itemPos",position);
-                startActivityForResult(editIntent,1);
+                //Intent editIntent = new Intent(MainActivity.this, EditItemActivity.class);
+                //editIntent.putExtra("oldItem", items.get(position).toString());
+                //editIntent.putExtra("itemPos",position);
+                //startActivityForResult(editIntent,1);
+
+                FragmentManager fm = getSupportFragmentManager();
+                EditItemDialog dialog = EditItemDialog.newInstance(items.get(position).toString(), position);
+                dialog.show(fm, "activity_edit_item_dialog");
+
             }
         });
     }
@@ -140,7 +146,14 @@ public class MainActivity extends ActionBarActivity {
             items.add(itemPosition, editedItem);
             writeItems();
         }
+    }
 
-
+    // function to be called when dialog button save is clicked
+    @Override
+    public void saveItem(String name, int pos) {
+        items.remove(pos);
+        itemsAdapter.notifyDataSetChanged();
+        items.add(pos, name);
+        writeItems();
     }
 }

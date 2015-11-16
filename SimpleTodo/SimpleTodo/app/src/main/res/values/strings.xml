@@ -6,4 +6,7 @@
     <string name="edit_item_title">EditItem</string>
     <string name="editItemLabel">Edit Item below :</string>
     <string name="save_button">Save</string>
+    <string name="title_activity_edit_item_dialog">Edit Item</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
