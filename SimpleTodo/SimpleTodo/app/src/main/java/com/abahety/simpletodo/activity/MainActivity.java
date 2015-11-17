@@ -1,16 +1,24 @@
-package com.abahety.simpletodo;
+package com.abahety.simpletodo.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.abahety.simpletodo.R;
+import com.abahety.simpletodo.storage.ToDoItem;
+import com.abahety.simpletodo.storage.ToDoItemAdaptor;
+import com.abahety.simpletodo.storage.ToDoItemDatabase;
 
 import org.apache.commons.io.FileUtils;
 
@@ -23,8 +31,9 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
 
     private ListView lvItems;
     private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
+    //private ArrayAdapter<String> itemsAdapter;
     private String blankString = "";
+    private ToDoItemAdaptor itemsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +42,26 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
 
         //initialize list of items
         //items = new ArrayList<String>();
-        readItems();
+        //readItems();
            //initialize adapter to load to list view
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
+        //itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
 
         //get handle to listView
         lvItems = (ListView)findViewById(R.id.lvItems);
 
+        itemsAdapter = new ToDoItemAdaptor(this, getAllItemsFromDb());
 
         //attach adapter to listView
         lvItems.setAdapter(itemsAdapter);
+
 
         //set onclick listener for list items
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                items.remove(position);
-                itemsAdapter.notifyDataSetChanged();
-                writeItems();//save to file
+//                items.remove(position);
+//                itemsAdapter.notifyDataSetChanged();
+//                writeItems();//save to file
                 return true;
             }
         });
@@ -102,12 +113,15 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
             return;//do nothing
         }
         //add item to adapter
-        itemsAdapter.add(newItemValue);
+       // itemsAdapter.add(newItemValue);
         //clear the editText field
         etNewItem.setText(blankString);
 
         //save to file
-        writeItems();
+        //writeItems();
+        //save to Db
+        writeToDb(newItemValue);
+        itemsAdapter.changeCursor(getAllItemsFromDb());
     }
 
     private void writeItems() {
@@ -151,9 +165,47 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
     // function to be called when dialog button save is clicked
     @Override
     public void saveItem(String name, int pos) {
-        items.remove(pos);
-        itemsAdapter.notifyDataSetChanged();
-        items.add(pos, name);
-        writeItems();
+        //items.remove(pos);
+        //itemsAdapter.notifyDataSetChanged();
+        //items.add(pos, name);
+        //writeItems();
+        //writeToDb(name);
+        Toast.makeText(this,"update",Toast.LENGTH_SHORT).show();
     }
+
+    private void writeToDb(String name) {
+        ToDoItem item = new ToDoItem(name);
+        item.save();
+    }
+
+
+    public Cursor getAllItemsFromDb(){
+        try {
+            ToDoItemDatabase handler = ToDoItemDatabase.getInstance(this);
+            // Get access to the underlying writeable database
+            SQLiteDatabase db = handler.getWritableDatabase();
+            // Query for items from the database and get a cursor back
+            Cursor cur =  db.rawQuery("select rowid _id,*from Items",null);
+            if(cur.getCount() != 0){
+                cur.moveToFirst();
+
+                do{
+                    String row_values = "";
+
+                    for(int i = 0 ; i < cur.getColumnCount(); i++){
+                        row_values = row_values + " || " + cur.getString(i);
+                    }
+
+                    Log.d("LOG_TAG_HERE", row_values);
+
+                }while (cur.moveToNext());
+            }
+            return cur;
+        }catch(Throwable e){
+            Log.e("DB_Error", e.getMessage());
+            return null;
+        }
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.abahety.simpletodo;
+package com.abahety.simpletodo.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+
+import com.abahety.simpletodo.R;
 
 
 public class EditItemDialog extends DialogFragment implements View.OnClickListener {
@@ -79,7 +81,6 @@ public class EditItemDialog extends DialogFragment implements View.OnClickListen
     public void onClick(View v) {
         String itemName = etItem.getText().toString();
         int pos = getArguments().getInt(keyPos);
-
         mListener.saveItem(itemName,pos);
         dismiss();
     }
