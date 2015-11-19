@@ -16,7 +16,7 @@ import java.util.List;
 public class ToDoItem extends Model{
 
     @Column(name="name")
-    public String item;
+    public String itemName;
 
     //for active android to work
     public ToDoItem(){
@@ -25,7 +25,11 @@ public class ToDoItem extends Model{
 
     public ToDoItem(String itemName){
         super();
-        this.item=itemName;
+        this.itemName=itemName;
+    }
+
+    public String getItemName(){
+        return this.itemName;
     }
 
     /**
@@ -34,6 +38,12 @@ public class ToDoItem extends Model{
      */
     public static List<ToDoItem> getAllItems(){
         return new Select().all().from(ToDoItem.class).execute();
+    }
+
+    // this function will be called by array adaptor to put value in textview section of ListView
+    @Override
+    public String toString() {
+        return this.itemName;
     }
 }
 

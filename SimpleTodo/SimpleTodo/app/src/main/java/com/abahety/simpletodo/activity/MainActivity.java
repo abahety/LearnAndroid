@@ -1,24 +1,19 @@
 package com.abahety.simpletodo.activity;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.abahety.simpletodo.R;
 import com.abahety.simpletodo.storage.ToDoItem;
-import com.abahety.simpletodo.storage.ToDoItemAdaptor;
-import com.abahety.simpletodo.storage.ToDoItemDatabase;
 
 import org.apache.commons.io.FileUtils;
 
@@ -30,38 +25,36 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity implements EditItemDialog.EditItemDialogListener {
 
     private ListView lvItems;
-    private ArrayList<String> items;
-    //private ArrayAdapter<String> itemsAdapter;
+    private ArrayList<ToDoItem> items;
+    private ArrayAdapter<ToDoItem> itemsAdapter;
     private String blankString = "";
-    private ToDoItemAdaptor itemsAdapter;
+    private static String SPACE_DELETED = " deleted !!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialize list of items
-        //items = new ArrayList<String>();
-        //readItems();
-           //initialize adapter to load to list view
-        //itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
+        //initialize list of items from DB
+        readItems();
+        //initialize adapter to load to list view
+        itemsAdapter = new ArrayAdapter<ToDoItem>(this, android.R.layout.simple_list_item_1,items);
 
         //get handle to listView
         lvItems = (ListView)findViewById(R.id.lvItems);
 
-        itemsAdapter = new ToDoItemAdaptor(this, getAllItemsFromDb());
-
         //attach adapter to listView
         lvItems.setAdapter(itemsAdapter);
-
 
         //set onclick listener for list items
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                items.remove(position);
-//                itemsAdapter.notifyDataSetChanged();
-//                writeItems();//save to file
+                String deletedItemName = items.get(position).getItemName();
+                //delete from DB
+                removeItem(position);
+                //notify
+                showDeletedNotification(deletedItemName);
                 return true;
             }
         });
@@ -69,15 +62,10 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent editIntent = new Intent(MainActivity.this, EditItemActivity.class);
-                //editIntent.putExtra("oldItem", items.get(position).toString());
-                //editIntent.putExtra("itemPos",position);
-                //startActivityForResult(editIntent,1);
-
                 FragmentManager fm = getSupportFragmentManager();
-                EditItemDialog dialog = EditItemDialog.newInstance(items.get(position).toString(), position);
+                ToDoItem item = items.get(position);
+                EditItemDialog dialog = EditItemDialog.newInstance(item.getItemName(), position);
                 dialog.show(fm, "activity_edit_item_dialog");
-
             }
         });
     }
@@ -96,12 +84,6 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,15 +95,12 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
             return;//do nothing
         }
         //add item to adapter
-       // itemsAdapter.add(newItemValue);
+        ToDoItem newItem = getNewItem(newItemValue);
+        itemsAdapter.add(newItem);
         //clear the editText field
         etNewItem.setText(blankString);
-
-        //save to file
-        //writeItems();
         //save to Db
-        writeToDb(newItemValue);
-        itemsAdapter.changeCursor(getAllItemsFromDb());
+        saveToDb(newItem);
     }
 
     private void writeItems() {
@@ -135,13 +114,7 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
     }
 
     private void readItems(){
-        File todoFile = getFileHandle();
-
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        items = new ArrayList<ToDoItem>(ToDoItem.getAllItems());
     }
 
     private File getFileHandle() {
@@ -149,63 +122,37 @@ public class MainActivity extends ActionBarActivity implements EditItemDialog.Ed
         return new File(fileDir, "todo.txt");
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(resultCode==RESULT_OK && requestCode==1){
-            String editedItem = data.getExtras().getString("newItem");
-            int itemPosition = data.getExtras().getInt("itemPos");
-            items.remove(itemPosition);
-            itemsAdapter.notifyDataSetChanged();
-            items.add(itemPosition, editedItem);
-            writeItems();
-        }
-    }
-
     // function to be called when dialog button save is clicked
     @Override
-    public void saveItem(String name, int pos) {
-        //items.remove(pos);
-        //itemsAdapter.notifyDataSetChanged();
-        //items.add(pos, name);
+    public void saveItem(String editedItemName, int position) {
+        removeItem(position);
+        //create new item and save it in DB
+        ToDoItem newItem = getNewItem(editedItemName);
+        items.add(position, newItem);
         //writeItems();
-        //writeToDb(name);
-        Toast.makeText(this,"update",Toast.LENGTH_SHORT).show();
+        saveToDb(newItem);
+
     }
 
-    private void writeToDb(String name) {
-        ToDoItem item = new ToDoItem(name);
-        item.save();
+    private void removeItem(int position) {
+        ToDoItem oldItem  = items.get(position);
+        //delete from DB
+        oldItem.delete();
+        String deletedItemName = oldItem.getItemName();
+        //change in in memory array and notify adaptor
+        items.remove(position);
+        itemsAdapter.notifyDataSetChanged();
     }
 
-
-    public Cursor getAllItemsFromDb(){
-        try {
-            ToDoItemDatabase handler = ToDoItemDatabase.getInstance(this);
-            // Get access to the underlying writeable database
-            SQLiteDatabase db = handler.getWritableDatabase();
-            // Query for items from the database and get a cursor back
-            Cursor cur =  db.rawQuery("select rowid _id,*from Items",null);
-            if(cur.getCount() != 0){
-                cur.moveToFirst();
-
-                do{
-                    String row_values = "";
-
-                    for(int i = 0 ; i < cur.getColumnCount(); i++){
-                        row_values = row_values + " || " + cur.getString(i);
-                    }
-
-                    Log.d("LOG_TAG_HERE", row_values);
-
-                }while (cur.moveToNext());
-            }
-            return cur;
-        }catch(Throwable e){
-            Log.e("DB_Error", e.getMessage());
-            return null;
-        }
+    private ToDoItem getNewItem(String itemName){
+        return new ToDoItem(itemName);
     }
 
+    private void saveToDb(ToDoItem newItem) {
+        newItem.save();
+    }
 
+    private void showDeletedNotification(String item){
+        Toast.makeText(this,item + SPACE_DELETED,Toast.LENGTH_SHORT).show();
+    }
 }
