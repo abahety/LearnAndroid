@@ -14,17 +14,23 @@
         android:background="@android:color/white" />
 
     <ImageView
-        android:layout_width="349dp"
-        android:layout_height="171dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUserName"
         android:id="@+id/imvPhoto"
-        android:layout_gravity="center_horizontal" />
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_weight="0.02" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvCaption"
+        android:layout_below="@id/imvPhoto"
         android:layout_gravity="center_horizontal"
         android:textStyle="italic"
-        android:layout_weight="0.09" />
+        android:layout_weight="0.09"
+        android:ellipsize="end"
+        android:maxLines="3" />
 
 </LinearLayout>
