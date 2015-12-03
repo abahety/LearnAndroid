@@ -43,8 +43,6 @@ public class PhotosActivity extends ActionBarActivity {
         mediaAdapter = new PopularMediaArrayAdapter(this,mediaList);
         //set the adapter
         mediaListView.setAdapter(mediaAdapter);
-
-
     }
 
     private void populateMediaList() {
