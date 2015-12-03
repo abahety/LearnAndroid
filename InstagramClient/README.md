@@ -43,6 +43,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+* I had trouble understanding how to set custom list adaptor with a list of data which gets populated async. Before list is populated with data from instagram api, execution goes to next line in creating activity initializing the list view and setting adaptor with uninitialized list. 
 
 ## Open-source libraries used
 
@@ -51,7 +52,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2015] [Anand Bahety]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
