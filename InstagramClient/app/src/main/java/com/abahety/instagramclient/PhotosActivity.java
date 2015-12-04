@@ -1,11 +1,13 @@
 package com.abahety.instagramclient;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.abahety.instagramclient.client.InstagramClient;
 import com.abahety.instagramclient.model.PopularMedia;
@@ -29,20 +31,42 @@ public class PhotosActivity extends ActionBarActivity {
     ArrayList<PopularMedia> mediaList = new ArrayList<PopularMedia>();
    // ArrayAdapter<PopularMedia> adapter;
     PopularMediaArrayAdapter mediaAdapter;
+    // swipe container
+    private SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
 
-        //populate mediaList
-        populateMediaList();
+        //configure swipe container
+        configureSwipeContainer();
         //get list view
         mediaListView = (ListView)findViewById(R.id.lvMedia);
         // get the adapter
-        //adapter = new ArrayAdapter<PopularMedia>(this, android.R.layout.simple_list_item_1,mediaList);
         mediaAdapter = new PopularMediaArrayAdapter(this,mediaList);
         //set the adapter
         mediaListView.setAdapter(mediaAdapter);
+
+        //populate mediaList
+        populateMediaList();
+    }
+
+    private void configureSwipeContainer() {
+        swipeContainer = (SwipeRefreshLayout)findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                populateMediaList();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     private void populateMediaList() {
@@ -59,17 +83,21 @@ public class PhotosActivity extends ActionBarActivity {
                     mediaAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    toastErrorMessage();
                 }
-                Log.i("Debug", response.toString());
-
+                //Log.i("Debug", response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e("Error","Error connecting to instagram api. Status code:"+statusCode);
+                //Log.e("Error","Error connecting to instagram api. Status code:"+statusCode);
+                toastErrorMessage();
             }
         });
+    }
+
+    private void toastErrorMessage() {
+        Toast.makeText(getApplicationContext(), R.string.error_message, Toast.LENGTH_SHORT).show();
     }
 
 

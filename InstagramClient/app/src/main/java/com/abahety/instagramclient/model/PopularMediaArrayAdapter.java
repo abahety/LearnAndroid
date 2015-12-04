@@ -18,6 +18,12 @@ import java.util.ArrayList;
  */
 public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
 
+    private static class ViewHolder{
+        TextView tvUsername;
+        ImageView ivPhoto;
+        TextView tvCaption;
+    }
+
     public PopularMediaArrayAdapter(Context context, ArrayList<PopularMedia> mediaList) {
         super(context, 0, mediaList);
     }
@@ -25,20 +31,29 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        PopularMedia media = getItem(position);
+        final PopularMedia media = getItem(position);
+        final ViewHolder viewHolder;
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
+            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.media_list_entry, parent, false);
+            viewHolder.tvUsername =(TextView) convertView.findViewById(R.id.tvUserName);
+            viewHolder.ivPhoto = (ImageView)convertView.findViewById(R.id.imvPhoto);
+            viewHolder.tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder)convertView.getTag();
         }
-        // Lookup view for data population
-        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUserName);
-        TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
-        ImageView imvPhoto = (ImageView)convertView.findViewById(R.id.imvPhoto);
 
         // Populate the data into the template view using the data object
-        tvUsername.setText(media.getUserName());
-        tvCaption.setText(media.getCaption());
-        Picasso.with(getContext()).load(media.getImageUrl()).into(imvPhoto);
+        viewHolder.tvUsername.setText(media.getUserName());
+        viewHolder.tvCaption.setText(media.getCaption());
+        //clear out image view
+        viewHolder.ivPhoto.setImageResource(0);
+        //load image
+        Picasso.with(getContext()).load(media.getImageUrl())
+            .placeholder(R.drawable.photo_loading).into(viewHolder.ivPhoto);
+
         // Return the completed view to render on screen
         return convertView;
     }
