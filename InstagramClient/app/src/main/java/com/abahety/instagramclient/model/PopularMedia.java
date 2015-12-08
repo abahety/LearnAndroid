@@ -16,6 +16,8 @@ public class PopularMedia {
     private String imageUrl;
     private String caption;
     private String userName;
+    private String profilePicUrl;
+    private String timestamp;
 
     private static String Error_Tag = "JsonParseError";
 
@@ -31,6 +33,11 @@ public class PopularMedia {
         return userName;
     }
 
+    public String getProfilePicUrl() { return profilePicUrl;}
+
+    public String getTimeStamp() {return timestamp;}
+
+
     // Decodes json into PopularMedia model object
     public static PopularMedia fromJson(JSONObject jsonObject) {
         PopularMedia popularMedia = new PopularMedia();
@@ -38,7 +45,8 @@ public class PopularMedia {
         try {
             popularMedia.imageUrl = getImageUrlFromJsonObject(jsonObject);
             popularMedia.caption = getCaptionFromJsonObject(jsonObject);
-            popularMedia.userName = getUsernameFromJsonObject(jsonObject);
+            populateUserDetails(popularMedia,jsonObject);
+            popularMedia.timestamp = jsonObject.optString("created_time");
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -86,7 +94,7 @@ public class PopularMedia {
     // parse caption text key object => caption => text
     private static String getImageUrlFromJsonObject(JSONObject json) throws JSONException{
 
-            if (json.has("caption")) {
+            if (json.has("images")) {
                 JSONObject images = json.getJSONObject("images");
                 if(images!=null){
                     JSONObject standardRes = images.getJSONObject("standard_resolution");
@@ -101,19 +109,15 @@ public class PopularMedia {
     }
 
     // parse caption text key object => caption => text
-    private static String getUsernameFromJsonObject(JSONObject json) throws JSONException{
-
-            if (json.has("caption")) {
+    private static void populateUserDetails(PopularMedia media,JSONObject json) throws JSONException{
+            if (json.has("user")) {
                 JSONObject user = json.getJSONObject("user");
                 if(user!=null){
-                    return user.getString("username");
+                    media.userName= user.optString("username");
+                    media.profilePicUrl = user.optString("profile_picture");
                 }
             }
-
-        return null;
-
     }
-
 
     @Override
     public String toString() {

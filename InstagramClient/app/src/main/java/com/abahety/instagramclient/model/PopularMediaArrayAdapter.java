@@ -1,6 +1,7 @@
 package com.abahety.instagramclient.model;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abahety.instagramclient.R;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
         TextView tvUsername;
         ImageView ivPhoto;
         TextView tvCaption;
+        RoundedImageView ivProfile;
     }
 
     public PopularMediaArrayAdapter(Context context, ArrayList<PopularMedia> mediaList) {
@@ -40,6 +44,9 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
             viewHolder.tvUsername =(TextView) convertView.findViewById(R.id.tvUserName);
             viewHolder.ivPhoto = (ImageView)convertView.findViewById(R.id.imvPhoto);
             viewHolder.tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
+            viewHolder.ivProfile = (RoundedImageView)convertView.findViewById(R.id.ivProfile);
+            viewHolder.ivProfile.setBorderColor(Color.LTGRAY);
+            viewHolder.ivPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
@@ -50,9 +57,22 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
         viewHolder.tvCaption.setText(media.getCaption());
         //clear out image view
         viewHolder.ivPhoto.setImageResource(0);
-        //load image
-        Picasso.with(getContext()).load(media.getImageUrl())
-            .placeholder(R.drawable.photo_loading).into(viewHolder.ivPhoto);
+        //load profile image
+         Picasso.with(getContext()).load(media.getProfilePicUrl()).fit().into(viewHolder.ivProfile);
+        // load media photo
+        viewHolder.ivPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE); //display placeholder
+         Picasso.with(getContext()).load(media.getImageUrl())
+            .placeholder(R.drawable.photo_loading).into(viewHolder.ivPhoto,new Callback() {
+             @Override
+             public void onSuccess() {
+                viewHolder.ivPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+             }
+
+             @Override
+             public void onError() {
+
+             }
+         });
 
         // Return the completed view to render on screen
         return convertView;
