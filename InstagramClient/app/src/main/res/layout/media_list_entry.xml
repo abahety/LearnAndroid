@@ -52,7 +52,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/tvTimeStamp"
-            android:layout_weight="0.2" />
+            android:layout_weight="0.2"
+            android:textAlignment="viewEnd"
+            android:phoneNumber="true"
+            android:gravity="end"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <ImageView

@@ -2,6 +2,7 @@ package com.abahety.instagramclient.model;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
         ImageView ivPhoto;
         TextView tvCaption;
         RoundedImageView ivProfile;
+        TextView timestamp;
     }
 
     public PopularMediaArrayAdapter(Context context, ArrayList<PopularMedia> mediaList) {
@@ -47,6 +49,7 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
             viewHolder.ivProfile = (RoundedImageView)convertView.findViewById(R.id.ivProfile);
             viewHolder.ivProfile.setBorderColor(Color.LTGRAY);
             viewHolder.ivPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            viewHolder.timestamp = (TextView)convertView.findViewById(R.id.tvTimeStamp);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
@@ -55,6 +58,11 @@ public class PopularMediaArrayAdapter extends ArrayAdapter<PopularMedia> {
         // Populate the data into the template view using the data object
         viewHolder.tvUsername.setText(media.getUserName());
         viewHolder.tvCaption.setText(media.getCaption());
+
+        String timeStampRelative = DateUtils.getRelativeTimeSpanString(Long.valueOf(media.getTimeStamp()).longValue() * 1000,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        timeStampRelative = timeStampRelative.substring(0,timeStampRelative.indexOf(' ')+2).replace(" ","");
+        viewHolder.timestamp.setText(timeStampRelative);
         //clear out image view
         viewHolder.ivPhoto.setImageResource(0);
         //load profile image

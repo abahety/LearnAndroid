@@ -18,6 +18,7 @@ public class PopularMedia {
     private String userName;
     private String profilePicUrl;
     private String timestamp;
+    private int imageHeight, imageWidth;
 
     private static String Error_Tag = "JsonParseError";
 
@@ -37,6 +38,13 @@ public class PopularMedia {
 
     public String getTimeStamp() {return timestamp;}
 
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
 
     // Decodes json into PopularMedia model object
     public static PopularMedia fromJson(JSONObject jsonObject) {
