@@ -65,9 +65,22 @@ import org.json.JSONObject;
  */
 public class TwitterUser {
 
-    String username;
-    String screenName;
-    String profileImageUrl;
+    private String username;
+    private String screenName;
+    private String profileImageUrl;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
     static String AT="@";
 
     public static TwitterUser fromJson(JSONObject json){

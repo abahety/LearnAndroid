@@ -50,11 +50,12 @@ public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
         }
 
         // Populate the data into the template view using the data object
-        Picasso.with(getContext()).load(tweet.user.profileImageUrl).into(viewHolder.ivProfile);
-        viewHolder.tvUsername.setText(tweet.user.username);
-        viewHolder.tvScreenName.setText(tweet.user.screenName);
-        viewHolder.tvBody.setText(tweet.body);
-        viewHolder.tvTimeStamp.setText(Tweet.getRelativeTimeAgo(tweet.createAt));
+        TwitterUser user = tweet.getUser();
+        Picasso.with(getContext()).load(user.getProfileImageUrl()).into(viewHolder.ivProfile);
+        viewHolder.tvUsername.setText(user.getUsername());
+        viewHolder.tvScreenName.setText(user.getScreenName());
+        viewHolder.tvBody.setText(tweet.getBody());
+        viewHolder.tvTimeStamp.setText(Tweet.getRelativeTimeAgo(tweet.getCreateAt()));
 
         // Return the completed view to render on screen
         return convertView;

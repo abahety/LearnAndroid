@@ -106,11 +106,26 @@ import java.util.Locale;
  */
 public class Tweet {
 
-    String body;
-    long id; //unique id of tweet
-    String createAt;
-    TwitterUser user;
+    private String body;
+    private long id; //unique id of tweet
+    private String createAt;
+    private TwitterUser user;
 
+    public String getBody() {
+        return body;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public TwitterUser getUser() {
+        return user;
+    }
 
     public static Tweet fromJson(JSONObject json){
         Tweet tweet = new Tweet();
