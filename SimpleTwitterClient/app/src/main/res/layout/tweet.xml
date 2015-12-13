@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/ivProfile"
         android:paddingLeft="5dp"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+
         android:textStyle="bold" />
 
     <TextView
@@ -55,8 +55,10 @@
         android:layout_below="@+id/tvUserName"
         android:layout_toRightOf="@+id/ivProfile"
         android:layout_toEndOf="@+id/ivProfile"
+        android:textColor="@android:color/black"
         android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:textSize="14sp"
-        android:textColorLink="#0000ff" />
+        android:paddingTop="10dp"
+
+        android:textColorLink="@color/hyperlink"
+        android:paddingBottom="5dp" />
 </RelativeLayout>

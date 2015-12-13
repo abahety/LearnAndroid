@@ -3,5 +3,8 @@
 
     <string name="app_name">SimpleTwitterClient</string>
     <string name="login_label">Connect with Twitter</string>
+    <string name="compose_tweet_hint">What\'s happening ?</string>
+    <string name="tweet_success">Tweeted successfully !!</string>
+    <string name="tweet_failure">Error updating status. Try again !!</string>
 
 </resources>
