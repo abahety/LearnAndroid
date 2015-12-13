@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.models;
 
+import android.text.Html;
 import android.text.format.DateUtils;
 
 import org.json.JSONArray;
@@ -131,7 +132,7 @@ public class Tweet {
         Tweet tweet = new Tweet();
         try {
             //get text
-            tweet.body = json.optString("text");
+            tweet.body = Html.fromHtml(json.optString("text")).toString();
             tweet.createAt = json.optString("created_at");
             tweet.id = json.optLong("id");
             tweet.user=TwitterUser.fromJson(json.getJSONObject("user"));

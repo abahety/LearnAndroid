@@ -6,5 +6,11 @@
     <string name="compose_tweet_hint">What\'s happening ?</string>
     <string name="tweet_success">Tweeted successfully !!</string>
     <string name="tweet_failure">Error updating status. Try again !!</string>
+    <string name="TweetButtonLabel">Tweet</string>
+    <string name="composeActivityLabel">Tweet</string>
+    <string name="timelineActivityLabel">Home</string>
+    <string name="no_network">No internet connection!!</string>
+    <string name="errorfromTwitter">Error connecting to Twitter. Try again later!!</string>
+    <string name="errorOccured">Oops something went wrong. Try agian later !!</string>
 
 </resources>

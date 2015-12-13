@@ -48,9 +48,18 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimelineActivity" />
+        <activity android:name=".TimelineActivity"
+            android:label="@string/timelineActivityLabel"
+            android:launchMode="singleTop"/>
         <activity
-            android:name=".ComposeTweetActivity">
+            android:name=".ComposeTweetActivity"
+            android:label="@string/composeActivityLabel"
+            android:parentActivityName=".TimelineActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ComposeTweetActivity"
+                />
+
         </activity>
     </application>
 

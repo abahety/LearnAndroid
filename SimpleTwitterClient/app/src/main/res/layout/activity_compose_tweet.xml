@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.apps.twitterclient.ComposeTweetActivity"
+    android:id="@+id/compose_tweet"
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        android:layout_margin="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUserName"
+        android:layout_alignTop="@+id/ivProfile"
+        android:layout_toRightOf="@+id/ivProfile"
+        android:paddingLeft="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvScreenName"
+        android:layout_below="@+id/tvUserName"
+        android:layout_toRightOf="@+id/ivProfile"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textNoSuggestions|textMultiLine"
+        android:ems="10"
+        android:id="@+id/etPost"
+        android:layout_below="@+id/ivProfile"
+        android:layout_alignLeft="@+id/ivProfile"
+        android:layout_alignStart="@+id/ivProfile"
+        android:password="false"
+        android:hint="@string/compose_tweet_hint"
+        android:textColor="#000000"
+        android:lines="4"
+        android:gravity="top"
+        android:maxLength="@integer/tweetCharLimit"
+        android:autoLink="all"
+        android:visibility="invisible"
+        android:linksClickable="true"
+        android:textColorLink="@color/hyperlink"
+        android:focusable="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bPostTweet"
+        android:layout_below="@+id/etPost"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/TweetButtonLabel"
+        android:background="#55acee"
+        android:layout_marginRight="5dp"
+        android:textColor="#ffffff"
+        android:clickable="false"
+        android:onClick="postTweet"
+        android:visibility="invisible"
+        android:enabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCharCount"
+        android:layout_below="@+id/etPost"
+        android:gravity="center"
+        android:layout_toLeftOf="@+id/bPostTweet"
+        android:layout_toStartOf="@+id/bPostTweet"
+        android:layout_alignBottom="@+id/bPostTweet"
+        android:paddingRight="10dp"
+        android:visibility="invisible" />
+
+</RelativeLayout>

@@ -13,6 +13,11 @@ import android.content.Context;
  */
 public class TwitterApplication extends com.activeandroid.app.Application {
 	private static Context context;
+	public static int REQ_CODE=1;
+	public static int RESP_OK=2;
+	public static int REST_FAIL=3;
+	public static int MAX_TWEET_HELD_IN_MEMORY=150;
+	public static int TWEET_FETCH_COUNT=25;
 
 	@Override
 	public void onCreate() {
