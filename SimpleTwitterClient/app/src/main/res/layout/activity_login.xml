@@ -9,11 +9,15 @@
     tools:context=".LoginActivity">
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
         android:onClick="loginToRest"
-        android:text="@string/login_label" />
+        android:drawableLeft="@drawable/ic_twitter"
+        android:text="@string/login_label"
+        android:background="@color/twitterBlue"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="false"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
