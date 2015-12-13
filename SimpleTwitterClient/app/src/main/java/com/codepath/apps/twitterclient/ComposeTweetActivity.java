@@ -34,7 +34,9 @@ public class ComposeTweetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_tweet);
+        //set icon for action bar
         setActionBarIcon();
+        //get view pieces to put data into
         ivProfile = (ImageView)findViewById(R.id.ivProfile);
         etTweet = (EditText)findViewById(R.id.etPost);
         setOnTextChangeListenerForTweetBody(etTweet);
@@ -43,6 +45,7 @@ public class ComposeTweetActivity extends AppCompatActivity {
         bPostTweet = (Button)findViewById(R.id.bPostTweet);
         tvCharCount= (TextView)findViewById(R.id.tvCharCount);
         initializeTwitterRestClient();
+        //get logged in user details
         populateUserDetail();
 
     }
@@ -53,6 +56,7 @@ public class ComposeTweetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
+    // to keep changing character count
     private void setOnTextChangeListenerForTweetBody(final EditText etTweet) {
 
         etTweet.addTextChangedListener(new TextWatcher() {
@@ -81,6 +85,7 @@ public class ComposeTweetActivity extends AppCompatActivity {
 
     }
 
+    //mark these items visible after user data is loaded
     private void makeItemsOnViewVisible(){
         etTweet.setVisibility(View.VISIBLE);
         tvCharCount.setVisibility(View.VISIBLE);
