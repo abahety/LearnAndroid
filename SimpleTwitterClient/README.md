@@ -49,7 +49,8 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/abahety/LearnAndroid/blob/master/SimpleTwitterClient/Demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Media view inside timeline demo
+Media view inside timeline demo:
+
 <img src='https://github.com/abahety/LearnAndroid/blob/master/SimpleTwitterClient/DemoWithMedia.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
