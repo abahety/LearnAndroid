@@ -40,6 +40,7 @@ The following **additional** features are implemented:
   * User can see soft input keyboard open directly when he tries to compose a tweet with focus to edit text view
   * User is taken back to timeline with hiding of keyboard once tweet is successfully posted
   * User cannot click the tweet button untill he has some data entered into edit text field
+  * Added media view (photo only as of now) in the timeline activity itself
 
 
 ## Video Walkthrough 
@@ -47,6 +48,9 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/abahety/LearnAndroid/blob/master/SimpleTwitterClient/Demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+Media view inside timeline demo
+<img src='https://github.com/abahety/LearnAndroid/blob/master/SimpleTwitterClient/DemoWithMedia.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
