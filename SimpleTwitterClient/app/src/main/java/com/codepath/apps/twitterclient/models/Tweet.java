@@ -2,8 +2,10 @@ package com.codepath.apps.twitterclient.models;
 
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -107,10 +109,23 @@ import java.util.Locale;
  */
 public class Tweet {
 
+    public enum MediaType{
+        Photo,Video
+    }
     private String body;
     private long id; //unique id of tweet
     private String createAt;
     private TwitterUser user;
+    private String mediaUrl;
+    private MediaType mediaType;
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public MediaType getMediaType() {
+        return mediaType;
+    }
 
     public String getBody() {
         return body;
@@ -136,6 +151,10 @@ public class Tweet {
             tweet.createAt = json.optString("created_at");
             tweet.id = json.optLong("id");
             tweet.user=TwitterUser.fromJson(json.getJSONObject("user"));
+            if(json.optJSONObject("extended_entities")!=null) {
+                setMediaType(tweet, json.getJSONObject("extended_entities"));
+            }
+
         }catch(Exception e){
             //log error
             return null;
@@ -186,5 +205,20 @@ public class Tweet {
         }
         //Log.d("DEBUG", rawDate + "==>" +relativeDate+"==>"+ abbreviatedTime);
         return abbreviatedTime;
+    }
+
+    private static void setMediaType(Tweet tweet, JSONObject json) throws JSONException {
+
+        if(json.optJSONArray("media")!=null) {
+            JSONArray mediaArray = json.getJSONArray("media");
+            if (mediaArray != null && mediaArray.length() > 0){
+                JSONObject media = (JSONObject)mediaArray.get(0);
+                tweet.mediaUrl = media.getString("media_url")+":medium";
+                if(media.optString("type")!=null)
+                tweet.mediaType="photo".equalsIgnoreCase(media.getString("type"))?MediaType.Photo:null;
+                Log.d("DEBUG", tweet.mediaUrl + " , type=" + tweet.mediaType);
+             }
+        }
+
     }
 }

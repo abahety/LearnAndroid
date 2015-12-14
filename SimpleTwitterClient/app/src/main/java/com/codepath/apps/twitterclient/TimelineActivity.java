@@ -204,9 +204,7 @@ public class TimelineActivity extends AppCompatActivity {
                     //form new array list with latest data
                     List<Tweet> latestTweets = new ArrayList<Tweet>();
                     latestTweets.addAll(Tweet.fromJson(response));
-                    //append already obtained data
-                    latestTweets.addAll(tweets);
-                    //clear current data
+                    //clear current data, as there can be more data into the system
                     tweets.clear();
                     //add entire data into old list from new one.
                     tweets.addAll(latestTweets);

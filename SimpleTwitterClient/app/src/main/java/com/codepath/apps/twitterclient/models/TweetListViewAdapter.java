@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
     private static class ViewHolder{
         TextView tvUsername;
-        ImageView ivProfile;
+        ImageView ivProfile, ivMedia;
         TextView tvScreenName;
         TextView tvTimeStamp;
         TextView tvBody;
@@ -44,6 +44,7 @@ public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
             viewHolder.ivProfile = (ImageView)convertView.findViewById(R.id.ivProfile);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTimeStamp = (TextView)convertView.findViewById(R.id.tvTimestamp);
+            viewHolder.ivMedia=(ImageView)convertView.findViewById(R.id.ivMedia);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
@@ -56,6 +57,10 @@ public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvScreenName.setText(user.getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTimeStamp.setText(Tweet.getRelativeTimeAgo(tweet.getCreateAt()));
+        viewHolder.ivMedia.setImageResource(0);//clear the image
+        if(Tweet.MediaType.Photo==tweet.getMediaType()){
+            Picasso.with(getContext()).load(tweet.getMediaUrl()).into(viewHolder.ivMedia);
+        }
 
         // Return the completed view to render on screen
         return convertView;
