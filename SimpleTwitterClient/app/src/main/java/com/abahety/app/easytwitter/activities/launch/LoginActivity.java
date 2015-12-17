@@ -1,11 +1,11 @@
-package com.abahety.app.easytwitter.launch;
+package com.abahety.app.easytwitter.activities.launch;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.codepath.apps.twitterclient.R;
-import com.abahety.app.easytwitter.timeline.TimelineActivity;
+import com.abahety.app.easytwitter.activities.timeline.TimelineActivity;
 import com.abahety.app.easytwitter.network.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 

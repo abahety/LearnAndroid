@@ -1,5 +1,4 @@
-package com.abahety.app.easytwitter.timeline;
-
+package com.abahety.app.easytwitter.activities.timeline;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +13,10 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class HomeTimelineFragment  extends TweetFragment {
+/**
+ * Created by abahety on 12/17/15.
+ */
+public class MentionsTimelineFragment extends TweetFragment {
     private TwitterClient client;
 
     @Override
@@ -31,7 +33,7 @@ public class HomeTimelineFragment  extends TweetFragment {
         }
 
         client = getRestClient();
-        client.getTweetsOlderThanMaxId(maxId, new JsonHttpResponseHandler() {
+        client.getMentionsTimeLineMethod(maxId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

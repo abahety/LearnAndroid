@@ -1,4 +1,4 @@
-package com.abahety.app.easytwitter.timeline;
+package com.abahety.app.easytwitter.activities.timeline;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
