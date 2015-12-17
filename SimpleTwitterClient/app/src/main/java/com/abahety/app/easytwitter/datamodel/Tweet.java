@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient.models;
+package com.abahety.app.easytwitter.datamodel;
 
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -220,5 +220,13 @@ public class Tweet {
              }
         }
 
+    }
+
+    public static Tweet getSampleTweet(){
+        Tweet tweet = new Tweet();
+        tweet.body = "hello";
+        tweet.createAt="Tue Aug 28 21:16:23 +0000 2012";
+        tweet.user = TwitterUser.getSample();
+        return tweet;
     }
 }

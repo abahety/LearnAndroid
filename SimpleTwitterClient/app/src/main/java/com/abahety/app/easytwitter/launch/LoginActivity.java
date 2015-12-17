@@ -1,9 +1,12 @@
-package com.codepath.apps.twitterclient;
+package com.abahety.app.easytwitter.launch;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.codepath.apps.twitterclient.R;
+import com.abahety.app.easytwitter.timeline.TimelineActivity;
+import com.abahety.app.easytwitter.network.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
@@ -22,7 +25,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
 //		getMenuInflater().inflate(R.menu.main_menu, menu);
-//		return true;
+//		return true;◊
 //	}
 
 	// OAuth authenticated successfully, launch primary authenticated activity

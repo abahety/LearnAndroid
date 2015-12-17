@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient.models;
+package com.abahety.app.easytwitter.fragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abahety.app.easytwitter.datamodel.Tweet;
+import com.abahety.app.easytwitter.datamodel.TwitterUser;
 import com.codepath.apps.twitterclient.R;
 import com.squareup.picasso.Picasso;
 

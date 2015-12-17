@@ -1,11 +1,8 @@
-package com.codepath.apps.twitterclient.models;
+package com.abahety.app.easytwitter.fragment;
 
 
 import android.widget.AbsListView;
 
-/**
- * Created by abahety on 12/11/15.
- */
 public abstract class EndlessScrollListener implements AbsListView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.

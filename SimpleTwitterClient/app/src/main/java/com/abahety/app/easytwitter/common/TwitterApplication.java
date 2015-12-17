@@ -1,6 +1,8 @@
-package com.codepath.apps.twitterclient;
+package com.abahety.app.easytwitter.common;
 
 import android.content.Context;
+
+import com.abahety.app.easytwitter.network.TwitterClient;
 
 /*
  * This is the Android application itself and is used to configure various settings

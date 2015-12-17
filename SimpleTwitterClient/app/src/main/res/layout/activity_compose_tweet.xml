@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.twitterclient.ComposeTweetActivity"
+    tools:context="com.abahety.app.easytwitter.compose.ComposeTweetActivity"
     android:id="@+id/compose_tweet"
     android:background="#ffffff">
 

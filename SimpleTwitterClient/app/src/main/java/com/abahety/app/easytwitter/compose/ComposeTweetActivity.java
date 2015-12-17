@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.abahety.app.easytwitter.compose;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codepath.apps.twitterclient.models.TwitterUser;
+import com.codepath.apps.twitterclient.R;
+import com.abahety.app.easytwitter.common.TwitterApplication;
+import com.abahety.app.easytwitter.network.TwitterClient;
+import com.abahety.app.easytwitter.datamodel.TwitterUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 

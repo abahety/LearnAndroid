@@ -1,7 +1,8 @@
-package com.codepath.apps.twitterclient;
+package com.abahety.app.easytwitter.network;
 
 import android.content.Context;
 
+import com.abahety.app.easytwitter.common.TwitterApplication;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -76,8 +77,16 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getMe(AsyncHttpResponseHandler handler){
 		String apiURL = getApiUrl("account/verify_credentials.json");
-		getClient().get(apiURL,handler);
+		getClient().get(apiURL, handler);
 	}
 
 
+	public void getMentionsTimeLineMethod(long max_id, AsyncHttpResponseHandler handler) {
+		String apiURL = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		if(max_id!=0) {
+			params.put("max_id", max_id);
+		}
+		getClient().get(apiURL,params,handler);
+	}
 }

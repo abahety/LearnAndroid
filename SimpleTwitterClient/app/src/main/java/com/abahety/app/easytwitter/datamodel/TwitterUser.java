@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient.models;
+package com.abahety.app.easytwitter.datamodel;
 
 import org.json.JSONObject;
 
@@ -88,6 +88,14 @@ public class TwitterUser {
         user.username=json.optString("name");
         user.screenName=AT+json.optString("screen_name");
         user.profileImageUrl=json.optString("profile_image_url");
+        return user;
+    }
+
+    public static TwitterUser getSample(){
+        TwitterUser user = new TwitterUser();
+        user.username = "ABC XYZ";
+        user.screenName="abc";
+        user.profileImageUrl="http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg";
         return user;
     }
 
