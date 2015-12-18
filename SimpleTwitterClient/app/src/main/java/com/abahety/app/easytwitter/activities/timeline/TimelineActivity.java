@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.abahety.app.easytwitter.activities.profile.ProfileActivity;
 import com.abahety.app.easytwitter.common.TwitterApplication;
 import com.abahety.app.easytwitter.compose.ComposeTweetActivity;
 import com.abahety.app.easytwitter.network.TwitterClient;
@@ -29,13 +30,10 @@ public class TimelineActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TweetFragmentPagerAdapter(getSupportFragmentManager(),
                 TimelineActivity.this));
-        viewPager.setCurrentItem(0);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
     }
 
     private void setActionBarIcon() {
@@ -58,6 +56,11 @@ public class TimelineActivity extends AppCompatActivity {
                 //launch compose activity
                 Intent compose = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
                 startActivityForResult(compose, TwitterApplication.REQ_CODE);
+                return true;
+            case R.id.miProfile:
+                //launch profile activity
+                Intent profile = new Intent(TimelineActivity.this, ProfileActivity.class);
+                startActivity(profile);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

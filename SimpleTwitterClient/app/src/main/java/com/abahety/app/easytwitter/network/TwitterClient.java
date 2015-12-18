@@ -43,30 +43,16 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-	public void getTweetsOlderThanMaxId(long max_id,AsyncHttpResponseHandler handler) {
-
+	public void getHomeTimeline(long max_id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
-
+		params.put("count", TwitterApplication.TWEET_FETCH_COUNT);
+		getClient().get(apiUrl, params, handler);
 		if(max_id!=0) {
 			params.put("max_id", max_id);
 		}
-		getHomeTimeline(handler, params);
-	}
-
-	public void getFreshTweetsSinceLatestId(long since_id, AsyncHttpResponseHandler handler) {
-		RequestParams params = new RequestParams();
-		if(since_id!=0) {
-			params.put("since_id", since_id);
-		}
-		getHomeTimeline(handler, params);
-	}
-
-	private void getHomeTimeline(AsyncHttpResponseHandler handler, RequestParams params) {
-		params.put("count", TwitterApplication.TWEET_FETCH_COUNT);
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		getClient().get(apiUrl, params, handler);
 	}
-
 
 	public void postTweet(String body, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
@@ -80,13 +66,29 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiURL, handler);
 	}
 
+	public void getUserTimeline(String screen_name, long max_id, AsyncHttpResponseHandler handler){
+		String apiURL = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		if(max_id!=0) {
+			params.put("max_id", max_id);
+		}
+		params.put(TwitterApplication.SCREEN_NAME,screen_name);
+		getClient().get(apiURL, params, handler);
+	}
 
-	public void getMentionsTimeLineMethod(long max_id, AsyncHttpResponseHandler handler) {
+	public void getMentionsTimeLine(long max_id, AsyncHttpResponseHandler handler) {
 		String apiURL = getApiUrl("statuses/mentions_timeline.json");
 		RequestParams params = new RequestParams();
 		if(max_id!=0) {
 			params.put("max_id", max_id);
 		}
-		getClient().get(apiURL,params,handler);
+		getClient().get(apiURL, params, handler);
+	}
+
+	public void getUSerDetails(String screenName, AsyncHttpResponseHandler handler){
+		String apiURL = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put(TwitterApplication.SCREEN_NAME, screenName);
+		getClient().get(apiURL, params, handler);
 	}
 }

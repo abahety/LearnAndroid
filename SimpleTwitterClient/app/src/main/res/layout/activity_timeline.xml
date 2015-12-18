@@ -7,10 +7,11 @@
     tools:context="com.abahety.app.easytwitter.activities.timeline.TimelineActivity">
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
+        app:tabGravity="center"
         style="@style/MyCustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="scrollable"
+        app:tabMode="fixed"
         />
 
     <android.support.v4.view.ViewPager

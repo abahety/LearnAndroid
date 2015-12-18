@@ -20,6 +20,7 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 	public static int REST_FAIL=3;
 	public static int MAX_TWEET_HELD_IN_MEMORY=150;
 	public static int TWEET_FETCH_COUNT=25;
+	public static String SCREEN_NAME="screen_name";
 
 	@Override
 	public void onCreate() {

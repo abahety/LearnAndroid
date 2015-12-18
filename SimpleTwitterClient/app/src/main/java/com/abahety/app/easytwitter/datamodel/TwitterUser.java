@@ -68,6 +68,24 @@ public class TwitterUser {
     private String username;
     private String screenName;
     private String profileImageUrl;
+    private String tagLine;
+    private int tweetCount, followersCount, followingCount;
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public int getTweetCount() {
+        return tweetCount;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
 
     public String getUsername() {
         return username;
@@ -88,15 +106,10 @@ public class TwitterUser {
         user.username=json.optString("name");
         user.screenName=AT+json.optString("screen_name");
         user.profileImageUrl=json.optString("profile_image_url");
+        user.tagLine=json.optString("description");
+        user.tweetCount=json.optInt("statuses_count");
+        user.followersCount=json.optInt("followers_count");
+        user.followingCount=json.optInt("friends_count");
         return user;
     }
-
-    public static TwitterUser getSample(){
-        TwitterUser user = new TwitterUser();
-        user.username = "ABC XYZ";
-        user.screenName="abc";
-        user.profileImageUrl="http://a0.twimg.com/profile_images/730275945/oauth-dancer_normal.jpg";
-        return user;
-    }
-
 }

@@ -48,19 +48,24 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <activity android:name="com.abahety.app.easytwitter.activities.timeline.TimelineActivity"
+        <activity
+            android:name="com.abahety.app.easytwitter.activities.timeline.TimelineActivity"
             android:label="@string/timelineActivityLabel"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <activity
             android:name="com.abahety.app.easytwitter.compose.ComposeTweetActivity"
             android:label="@string/composeActivityLabel"
             android:parentActivityName="com.abahety.app.easytwitter.activities.timeline.TimelineActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abahety.app.easytwitter.compose.ComposeTweetActivity"
-                />
-
+                android:value="com.abahety.app.easytwitter.compose.ComposeTweetActivity" />
         </activity>
+        <activity android:name="com.abahety.app.easytwitter.activities.profile.ProfileActivity"
+            android:label="@string/profile"
+            android:parentActivityName="com.abahety.app.easytwitter.activities.timeline.TimelineActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.abahety.app.easytwitter.compose.ComposeTweetActivity" /></activity>
     </application>
 
 </manifest>

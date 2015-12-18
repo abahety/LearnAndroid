@@ -1,6 +1,7 @@
 package com.abahety.app.easytwitter.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abahety.app.easytwitter.activities.profile.ProfileActivity;
+import com.abahety.app.easytwitter.common.TwitterApplication;
 import com.abahety.app.easytwitter.datamodel.Tweet;
 import com.abahety.app.easytwitter.datamodel.TwitterUser;
 import com.codepath.apps.twitterclient.R;
@@ -54,6 +57,7 @@ public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
 
         // Populate the data into the template view using the data object
         TwitterUser user = tweet.getUser();
+        viewHolder.ivProfile.setTag(user.getScreenName()); // required for onClick listener
         Picasso.with(getContext()).load(user.getProfileImageUrl()).into(viewHolder.ivProfile);
         viewHolder.tvUsername.setText(user.getUsername());
         viewHolder.tvScreenName.setText(user.getScreenName());
@@ -63,6 +67,17 @@ public class TweetListViewAdapter extends ArrayAdapter<Tweet> {
         if(Tweet.MediaType.Photo==tweet.getMediaType()){
             Picasso.with(getContext()).load(tweet.getMediaUrl()).into(viewHolder.ivMedia);
         }
+
+        viewHolder.ivProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String screen_name=(String)v.getTag();
+                //launch profile activity
+                Intent profile = new Intent(getContext(),ProfileActivity.class);
+                profile.putExtra(TwitterApplication.SCREEN_NAME,screen_name);
+                getContext().startActivity(profile);
+            }
+        });
 
         // Return the completed view to render on screen
         return convertView;

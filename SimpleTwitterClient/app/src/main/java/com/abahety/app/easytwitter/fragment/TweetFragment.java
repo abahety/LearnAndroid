@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ import com.abahety.app.easytwitter.common.TwitterApplication;
 import com.abahety.app.easytwitter.datamodel.Tweet;
 import com.abahety.app.easytwitter.network.TwitterClient;
 import com.codepath.apps.twitterclient.R;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +36,6 @@ public abstract class TweetFragment extends Fragment {
     private ListView timeline;
     private SwipeRefreshLayout swipeContainer;
     protected int DEFAULT_MAX_ID=0;
-    private TwitterClient client;
 
     // This event fires 2nd, before views are created for the fragment
     // The onCreate method is called when the Fragment instance is being created, or re-created.
@@ -39,6 +44,7 @@ public abstract class TweetFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tweetAdapter = new TweetListViewAdapter(getActivity(), tweets);
+        loadMoreData(DEFAULT_MAX_ID);
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -71,7 +77,7 @@ public abstract class TweetFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //refresh entire timeline
-                populateTimeline(DEFAULT_MAX_ID);
+                loadMoreData(DEFAULT_MAX_ID);
                 swipeContainer.setRefreshing(false);
             }
         });
@@ -88,16 +94,24 @@ public abstract class TweetFragment extends Fragment {
         timeline.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                return loadMoreData(totalItemsCount); //use total count as offset
+                //if non-zero offset, get max id of tweet encountered so far to request more only below that to avoid duplicaiton
+                // in endless scrolling feature
+                long maxId=0;
+                if(totalItemsCount>0){
+                    //subtract 1 to avoid repeat of last processed id. Ref : https://dev.twitter.com/rest/public/timelines
+                    maxId= tweets.get(totalItemsCount-1).getId()-1;
+                }
+                return loadMoreData(maxId);// need to check what to do if API call failed half way
+//                return loadMoreData(totalItemsCount); //use total count as offset
             }
         });
     }
 
-    private boolean loadMoreData(final int offset) {
-        if(!isNetworkAvailable()){
-            toastErrorMessage(getString(R.string.no_network));
-            return false;
-        }
+//    private boolean loadMoreData(final int offset) {
+//        if(!isNetworkAvailable()){
+//            toastErrorMessage(getString(R.string.no_network));
+//            return false;
+//        }
 //
 //        //if non-zero offset, get max id of tweet encountered so far to request more only below that to avoid duplicaiton
 //        // in endless scrolling feature
@@ -106,35 +120,15 @@ public abstract class TweetFragment extends Fragment {
 //            //subtract 1 to avoid repeat of last processed id. Ref : https://dev.twitter.com/rest/public/timelines
 //            maxId= tweets.get(offset-1).getId()-1;
 //        }
-//        client = getRestClient();
-//        client.getTweetsOlderThanMaxId(maxId, new JsonHttpResponseHandler() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                try {
-//                    //Log.d("DEBUG", response.toString());
-//                    if (DEFAULT_MAX_ID == offset) {
-//                        tweets.clear();//first time loading on this activity. start from scratch
-//                    }
-//                    tweets.addAll(Tweet.fromJson(response)); // append new items
-//                    tweetAdapter.notifyDataSetChanged();
-//
-//                } catch (Exception e) {
-//                    toastErrorMessage(getString(R.string.errorOccured));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-//                toastErrorMessage(getString(R.string.errorfromTwitter));
-//                Log.d("DEBUG", response.toString());
-//
-//            }
-//        });
-        return true; // need to check what to do if API call failed half way
+//        loadMoreData(maxId);
+//        return true; // need to check what to do if API call failed half way
+//    }
+
+    protected void clearData(){
+        tweets.clear();
     }
 
-    protected void addTweets(List<Tweet> tweets){
+    protected void addDataToListView(List<Tweet> tweets){
         tweetAdapter.addAll(tweets);
     }
 
@@ -154,6 +148,38 @@ public abstract class TweetFragment extends Fragment {
         Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
     }
 
-    protected abstract void populateTimeline(long maxId);
+    private JsonHttpResponseHandler getJsonHttpRespHandlerNewInstance(final long maxId){
+        return new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    if (0 == maxId) {
+                        clearData();//first time loading on this activity. start from scratch
+                    }
+                    addDataToListView(Tweet.fromJson(response)); // append new items
+                } catch (Exception e) {
+                    toastErrorMessage(getString(R.string.errorOccured));
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                toastErrorMessage(getString(R.string.errorfromTwitter));
+                Log.d("DEBUG", response.toString());
+            }
+        };
+    }
+
+    private boolean loadMoreData(long maxId){
+        if(!isNetworkAvailable()){
+            toastErrorMessage(getString(R.string.no_network));
+            return false;
+        }
+        populateTimeline(maxId, getJsonHttpRespHandlerNewInstance(maxId));
+        return true;
+    }
+
+    protected abstract void populateTimeline(long maxId, JsonHttpResponseHandler responseHandler);
 
 }

@@ -214,19 +214,12 @@ public class Tweet {
             if (mediaArray != null && mediaArray.length() > 0){
                 JSONObject media = (JSONObject)mediaArray.get(0);
                 tweet.mediaUrl = media.getString("media_url")+":medium";
-                if(media.optString("type")!=null)
-                tweet.mediaType="photo".equalsIgnoreCase(media.getString("type"))?MediaType.Photo:null;
+                if(media.optString("type")!=null) {
+                    tweet.mediaType = "photo".equalsIgnoreCase(media.getString("type")) ? MediaType.Photo : null;
+                }
                 Log.d("DEBUG", tweet.mediaUrl + " , type=" + tweet.mediaType);
              }
         }
 
-    }
-
-    public static Tweet getSampleTweet(){
-        Tweet tweet = new Tweet();
-        tweet.body = "hello";
-        tweet.createAt="Tue Aug 28 21:16:23 +0000 2012";
-        tweet.user = TwitterUser.getSample();
-        return tweet;
     }
 }

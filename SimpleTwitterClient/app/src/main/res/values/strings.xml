@@ -12,5 +12,6 @@
     <string name="no_network">No internet connection!!</string>
     <string name="errorfromTwitter">Error connecting to Twitter. Try again later!!</string>
     <string name="errorOccured">Oops something went wrong. Try agian later !!</string>
+    <string name="profile">Profile</string>
 
 </resources>
