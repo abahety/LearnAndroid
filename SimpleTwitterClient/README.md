@@ -38,6 +38,7 @@ The following **bonus** features are implemented:
 The following **additional** features are implemented:
 
 * [ ] List anything else that you can get done to improve the app functionality!
+* Focused on organizing files as per feature. This was suggested before
 
 ## Video Walkthrough 
 
