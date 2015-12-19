@@ -11,11 +11,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/fmUserHeaderContainer"></FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/horizontal_divider"
+        android:layout_below="@id/fmUserHeaderContainer"
+        android:background="@color/darkTwitterBlue" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/fmUserHeaderContainer"
+        android:layout_below="@+id/horizontal_divider"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/ftContainer"></FrameLayout>

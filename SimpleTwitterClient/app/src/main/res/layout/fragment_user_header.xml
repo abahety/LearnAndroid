@@ -3,7 +3,8 @@
     android:id="@+id/userHeader"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:paddingBottom="5dp">
 
     <ImageView
         android:id="@+id/ivProfile"
@@ -40,7 +41,8 @@
         android:paddingTop="2dp"
         android:gravity="bottom"
         android:textAlignment="gravity"
-        android:text="\@anandbahety" />
+        android:text="\@anandbahety"
+        android:textColor="@color/screenName" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +52,8 @@
         android:paddingLeft="5dp"
         android:layout_below="@+id/tvUserName"
         android:layout_alignLeft="@+id/tvUserName"
-        android:layout_alignStart="@+id/tvUserName" />
+        android:layout_alignStart="@+id/tvUserName"
+        android:textColor="@color/shadedTwitterBlue" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +61,8 @@
         android:layout_alignLeft="@+id/ivProfile"
         android:layout_alignStart="@+id/ivProfile"
         android:layout_below="@+id/ivProfile"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:id="@+id/tweetCount"
@@ -72,13 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TWEETS"
-                android:textColor="@color/shadedTwitterBlue" />
+                android:textColor="@color/shadedTwitterBlue"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTweetCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:textStyle="bold"
                 android:textColor="@color/twitterBlue" />
         </LinearLayout>
 
@@ -94,13 +99,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FOLLOWING"
+                android:textStyle="bold"
                 android:textColor="@color/shadedTwitterBlue" />
 
             <TextView
                 android:id="@+id/tvFollowingCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:textStyle="bold"
                 android:textColor="@color/twitterBlue"/>
         </LinearLayout>
 
@@ -116,13 +122,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FOLLOWERS"
+                android:textStyle="bold"
                 android:textColor="@color/shadedTwitterBlue" />
 
             <TextView
                 android:id="@+id/tvFollowersCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
+                android:textStyle="bold"
                 android:textColor="@color/twitterBlue"/>
         </LinearLayout>
     </LinearLayout>

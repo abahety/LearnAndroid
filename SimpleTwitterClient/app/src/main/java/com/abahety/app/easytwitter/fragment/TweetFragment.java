@@ -44,7 +44,7 @@ public abstract class TweetFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tweetAdapter = new TweetListViewAdapter(getActivity(), tweets);
-        loadMoreData(DEFAULT_MAX_ID);
+        refresh();
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -107,28 +107,11 @@ public abstract class TweetFragment extends Fragment {
         });
     }
 
-//    private boolean loadMoreData(final int offset) {
-//        if(!isNetworkAvailable()){
-//            toastErrorMessage(getString(R.string.no_network));
-//            return false;
-//        }
-//
-//        //if non-zero offset, get max id of tweet encountered so far to request more only below that to avoid duplicaiton
-//        // in endless scrolling feature
-//        long maxId=0;
-//        if(offset>0){
-//            //subtract 1 to avoid repeat of last processed id. Ref : https://dev.twitter.com/rest/public/timelines
-//            maxId= tweets.get(offset-1).getId()-1;
-//        }
-//        loadMoreData(maxId);
-//        return true; // need to check what to do if API call failed half way
-//    }
-
-    protected void clearData(){
+    private void clearData(){
         tweets.clear();
     }
 
-    protected void addDataToListView(List<Tweet> tweets){
+    private void addDataToListView(List<Tweet> tweets){
         tweetAdapter.addAll(tweets);
     }
 
@@ -137,7 +120,7 @@ public abstract class TweetFragment extends Fragment {
     }
 
     // check network connectivity
-    protected boolean isNetworkAvailable() {
+    private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -182,4 +165,10 @@ public abstract class TweetFragment extends Fragment {
 
     protected abstract void populateTimeline(long maxId, JsonHttpResponseHandler responseHandler);
 
+    /**
+     * Refresh the data in list view. Wipes out all old data and gets fresh one
+     */
+    public void refresh() {
+        loadMoreData(DEFAULT_MAX_ID);
+    }
 }

@@ -11,12 +11,15 @@ import android.view.MenuItem;
 import com.abahety.app.easytwitter.activities.profile.ProfileActivity;
 import com.abahety.app.easytwitter.common.TwitterApplication;
 import com.abahety.app.easytwitter.compose.ComposeTweetActivity;
+import com.abahety.app.easytwitter.fragment.SmartFragmentStatePagerAdapter;
+import com.abahety.app.easytwitter.fragment.TweetFragment;
 import com.abahety.app.easytwitter.network.TwitterClient;
 import com.codepath.apps.twitterclient.R;
 
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,7 @@ public class TimelineActivity extends AppCompatActivity {
         setActionBarIcon();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new TweetFragmentPagerAdapter(getSupportFragmentManager(),
                 TimelineActivity.this));
 
@@ -67,11 +70,14 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(resultCode==TwitterApplication.RESP_OK&& requestCode==TwitterApplication.REQ_CODE){
-//            //tweet was posted successfully from compose activity. update the list view data
-//            updateTimelineSinceToLatestTweets();
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==TwitterApplication.RESP_OK&& requestCode==TwitterApplication.REQ_CODE){
+            viewPager.setCurrentItem(0);
+           SmartFragmentStatePagerAdapter smartFragmentAdapter = (SmartFragmentStatePagerAdapter)viewPager.getAdapter();
+           TweetFragment fm = (TweetFragment)smartFragmentAdapter.getRegisteredFragment(0);
+            fm.refresh();
+
+        }
+    }
 }
